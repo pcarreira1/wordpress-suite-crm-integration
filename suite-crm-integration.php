@@ -33,6 +33,15 @@ function suite_crm_integration_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'suite_crm_integration_enqueue_scripts');
 
+function getFormValue($variable) {
+    if (is_array($variable)) {
+        $firstPosition = reset($variable);
+        return $firstPosition;
+    } else {
+        return $variable;
+    }
+}
+
 function log_cf7_form_content( $contact_form ) {
     $submission = WPCF7_Submission::get_instance();
     if ($submission) {
@@ -58,7 +67,7 @@ function log_cf7_form_content( $contact_form ) {
         foreach ($mappings as $key=>$value) {
             array_push($crmValues, array(
                 "name" => $key,
-                "value" => $form_data[$value]
+                "value" => getFormValue($form_data[$value])
             ));
         }
 
